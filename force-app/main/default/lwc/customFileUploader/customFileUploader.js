@@ -20,24 +20,37 @@ export default class CustomFileUploader extends LightningElement {
   fileData;
   async handleReadFile(event) {
     await this.readFile(event);
-    await this.handleUploadFile();
+    if (this.fileData) {
+      await this.handleUploadFile();
+    }
   }
 
-  async readFile(event) {
-    console.debug("openFileUpload", event);
-    const file = event.target.files[0];
-    let reader = new FileReader();
-    reader.onload = async () => {
-      var base64 = reader.result.split(",")[1];
-      this.fileData = {
-        filename: file.name,
-        base64: base64,
-        recordId: this.recordId
+  readFile(event) {
+    return new Promise((resolve, reject) => {
+      const file = event.target.files[0];
+      if (!file) {
+        console.error("No file selected");
+        reject("No file selected");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = reader.result.split(",")[1];
+        this.fileData = {
+          filename: file.name,
+          base64: base64,
+          recordId: this.recordId
+        };
+        console.log(this.fileData);
+        resolve(); // Resolve the promise when done
       };
-      console.log(this.fileData);
-    };
-    reader.readAsDataURL(file);
-    console.log("fileData", this.fileData);
+      reader.onerror = (error) => {
+        console.error("Error reading file:", error);
+        reject(error); // Reject on error
+      };
+      reader.readAsDataURL(file);
+    });
   }
 
   async handleUploadFile() {
