@@ -1,0 +1,29 @@
+<!--
+  @description       : 
+  @author            : Erlend.Hansen@stretch.no | https://trailblazer.me/id/ehansen7
+  @group             : 
+  @last modified on  : 09-23-2024
+  @last modified by  : Erlend.Hansen@stretch.no | https://trailblazer.me/id/ehansen7
+-->
+<template>
+  <lightning-card title="File Upload Demo LWC" icon-name="custom:custom14">
+    <div class="slds-m-around_medium">
+      <lightning-input
+        type="file"
+        accept={supportedFileTypes}
+        label="Attachment"
+        onchange={openFileUpload}
+      ></lightning-input>
+    </div>
+    <template if:true={fileData}>
+      <p>{fileData.filename}</p>
+    </template>
+    <lightning-button
+      variant="brand"
+      label="submit"
+      title="Submit"
+      onclick={handleUploadFile}
+      class="slds-m-left_x-small"
+    ></lightning-button>
+  </lightning-card>
+</template>

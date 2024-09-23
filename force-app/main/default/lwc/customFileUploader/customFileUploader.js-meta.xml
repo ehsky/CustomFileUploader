@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Custom File Uploader</masterLabel>
+    <description>A Custom file uploader component the be used in Lightning Out. Since standard component is not supported at the time of development</description>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="recordId" type="String" label="Record Id" description="Record Id of the record where the file is to be uploaded" role="inputOnly"/>
+            <property name="supportedFileTypes" type="String" default=".xlsx,.xls,.csv,.png,.doc,.docx,.pdf" label="Supported File Types" description="Comma separated list of file types supported" role="inputOnly"/>
+            <property name="contentDocumentIds" type="String[]" label="Content Document Id" description="Content Document Id of the file uploaded" role="outputOnly"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
