@@ -13,6 +13,7 @@
             <property name="buttonLabel" type="String" label="Button Label" description="Label of the file upload button to be displayed" role="inputOnly"/>
             <property name="supportedFileTypes" type="String" default=".xlsx,.xls,.csv,.png,.doc,.docx,.pdf" label="Supported File Types" description="Comma separated list of file types supported" role="inputOnly"/>
             <property name="navigateNextOnUpload" type="Boolean" label="Navigate To Next Screen On Upload" description="Navigate to next screen on successful file upload" role="inputOnly"/>
+            <property name="showPillContainer" type="Boolean" label="Show Pill Container" description="Show the pill container for uploaded files" role="inputOnly"/>
             <property name="contentDocumentIds" type="String[]" label="Content Document Id" description="Content Document Id of the file uploaded" role="outputOnly"/>
         </targetConfig>
     </targetConfigs>

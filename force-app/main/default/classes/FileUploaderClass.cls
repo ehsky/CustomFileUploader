@@ -20,9 +20,11 @@ public with sharing class FileUploaderClass {
        @AuraEnabled
       public static String uploadFile(String base64, String filename, String recordId) {
             ContentVersion cv = createContentVersion(base64, filename);
-            ContentDocumentLink cdl = createContentLink(cv.Id, recordId);
-            if (cv == null || cdl == null) { return null; }
-            return cdl.Id;
+            if(String.isNotBlank(recordId)){
+                ContentDocumentLink cdl = createContentLink(cv.Id, recordId);
+                return cdl.Id;
+            }
+            return cv.ContentDocumentId;
       }
       /*
        * @method createContentVersion() [private]
@@ -41,6 +43,7 @@ public with sharing class FileUploaderClass {
         cv.PathOnClient = filename;
         try {
           insert cv;
+            cv = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id WITH SYSTEM_MODE LIMIT 1];
           return cv;
         } catch(DMLException e) {
           System.debug(e);
@@ -65,6 +68,7 @@ public with sharing class FileUploaderClass {
           SELECT ContentDocumentId 
           FROM ContentVersion 
           WHERE Id =: contentVersionId
+          WITH SYSTEM_MODE
         ].ContentDocumentId;
         cdl.LinkedEntityId = recordId;
         // ShareType is either 'V', 'C', or 'I'
