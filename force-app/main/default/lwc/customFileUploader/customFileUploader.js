@@ -1,12 +1,17 @@
 import { LightningElement, api } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import uploadFile from "@salesforce/apex/FileUploaderClass.uploadFile";
-import { FlowAttributeChangeEvent } from "lightning/flowSupport";
+import {
+  FlowAttributeChangeEvent,
+  FlowNavigationNextEvent
+} from "lightning/flowSupport";
 
 export default class CustomFileUploader extends LightningElement {
   @api recordId;
   @api supportedFileTypes;
   @api contentDocumentIds;
+  @api buttonLabel = "Upload";
+  @api navigateNextOnUpload = false;
   _contentDocumentIds = [];
 
   fileData;
@@ -26,14 +31,25 @@ export default class CustomFileUploader extends LightningElement {
   }
 
   handleUploadFile() {
+    console.log("handleUploadFile");
     const { base64, filename, recordId } = this.fileData;
-    uploadFile({ base64, filename, recordId }).then((result) => {
-      this.fileData = null;
-      let title = `${filename} uploaded successfully!!`;
-      this.toast(title);
-      this._contentDocumentIds.add(result);
-      this.setFlowOutput();
-    });
+    uploadFile({ base64, filename, recordId })
+      .then((result) => {
+        this.fileData = null;
+        console.debug("result apx", result);
+        let title = `${filename} uploaded successfully!!`;
+        this.toast(title);
+        this._contentDocumentIds.push(result);
+      })
+      .then(() => {
+        this.setFlowOutput();
+      })
+      .finally(() => {
+        if (this.navigateNextOnUpload) {
+          const navigateNextEvent = new FlowNavigationNextEvent();
+          this.dispatchEvent(navigateNextEvent);
+        }
+      });
   }
 
   toast(title) {
@@ -45,6 +61,7 @@ export default class CustomFileUploader extends LightningElement {
   }
 
   setFlowOutput() {
+    console.debug("Files uploaded", JSON.stringify(this._contentDocumentIds));
     const attributeChangeEvent = new FlowAttributeChangeEvent(
       "contentDocumentIds",
       this._contentDocumentIds
