@@ -5,4 +5,4 @@ Created since the standard `<lightning-file-upload>` does not work for Lightning
 ## Deploy
 
 You can use the quick installer here to deploy the code directly to your org. \
-[![Deploy to salesforce](https://githubsfdeploy.herokuapp.com/resources/img/deploy.png)](https://githubsfdeploy.herokuapp.com/?owner=ehsky&repo=CustomFileUploader)
+[![Deploy to salesforce](https://githubsfdeploy.herokuapp.com/resources/img/deploy.png)](https://githubsfdeploy.herokuapp.com/?owner=ehsky&repo=CustomFileUploader&ref=main)
